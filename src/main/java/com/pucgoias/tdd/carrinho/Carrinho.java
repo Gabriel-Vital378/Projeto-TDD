@@ -8,7 +8,11 @@ public class Carrinho {
         return total;
     }
 
-    public void adicionarItem(Produto produto, int quantidade) {
+    public void adicionarItem(Produto produto, int quantidade) throws EstoqueInsuficienteException {
+        if (quantidade > produto.getEstoque()) {
+            throw new EstoqueInsuficienteException(
+                    "Quantidade solicitada maior que o estoque disponivel.");
+        }
         total += produto.getPreco() * quantidade;
     }
 }
