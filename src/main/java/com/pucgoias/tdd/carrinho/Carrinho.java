@@ -9,14 +9,8 @@ public class Carrinho {
     private Cupom cupomAplicado;
 
     public double calcularTotal() {
-        double total = 0.0;
-        for (ItemCarrinho item : itens) {
-            total += item.getSubtotal();
-        }
-        if (cupomAplicado != null) {
-            total -= total * cupomAplicado.getPercentualDesconto();
-        }
-        return total;
+        double totalSemDesconto = calcularSubtotalItens();
+        return aplicarDesconto(totalSemDesconto);
     }
 
     public void adicionarItem(Produto produto, int quantidade) throws EstoqueInsuficienteException {
@@ -32,7 +26,7 @@ public class Carrinho {
     }
 
     public void aplicarCupom(Cupom cupom) throws CupomJaAplicadoException {
-        if (cupomAplicado != null && cupomAplicado.getCodigo().equals(cupom.getCodigo())) {
+        if (cupomJaAplicado(cupom)) {
             throw new CupomJaAplicadoException("Este cupom ja foi aplicado.");
         }
         this.cupomAplicado = cupom;
@@ -42,5 +36,24 @@ public class Carrinho {
         if (itens.isEmpty()) {
             throw new CarrinhoVazioException("Nao e possivel finalizar um carrinho vazio.");
         }
+    }
+
+    private double calcularSubtotalItens() {
+        double subtotal = 0.0;
+        for (ItemCarrinho item : itens) {
+            subtotal += item.getSubtotal();
+        }
+        return subtotal;
+    }
+
+    private double aplicarDesconto(double total) {
+        if (cupomAplicado == null) {
+            return total;
+        }
+        return total - (total * cupomAplicado.getPercentualDesconto());
+    }
+
+    private boolean cupomJaAplicado(Cupom cupom) {
+        return cupomAplicado != null && cupomAplicado.getCodigo().equals(cupom.getCodigo());
     }
 }
