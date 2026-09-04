@@ -37,4 +37,10 @@ public class Carrinho {
         }
         this.cupomAplicado = cupom;
     }
+
+    public void finalizarCompra() throws CarrinhoVazioException {
+        if (itens.isEmpty()) {
+            throw new CarrinhoVazioException("Nao e possivel finalizar um carrinho vazio.");
+        }
+    }
 }
