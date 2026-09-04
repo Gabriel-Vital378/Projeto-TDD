@@ -41,4 +41,13 @@ class CarrinhoTest {
         carrinho.removerItem(produto);
         assertEquals(0.0, carrinho.calcularTotal(), 0.0001);
     }
+
+    @Test
+    void deveAplicarCupomDeDescontoAoTotal() throws Exception {
+        Produto produtoDezReais = new Produto("Caneta", 10.00, 10);
+        carrinho.adicionarItem(produtoDezReais, 2);
+        Cupom cupom = new Cupom("DESCONTO10", 0.10);
+        carrinho.aplicarCupom(cupom);
+        assertEquals(18.00, carrinho.calcularTotal(), 0.0001);
+    }
 }
