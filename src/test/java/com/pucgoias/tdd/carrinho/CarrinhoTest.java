@@ -17,17 +17,20 @@ class CarrinhoTest {
         produto = new Produto("Caneta", 2.50, 10);
     }
 
+    // Item 1
     @Test
     void carrinhoVazioTemTotalZero() {
         assertEquals(0.0, carrinho.calcularTotal());
     }
 
+    // Item 2
     @Test
     void deveAumentarTotalAoAdicionarItem() throws Exception {
         carrinho.adicionarItem(produto, 3);
         assertEquals(7.50, carrinho.calcularTotal(), 0.0001);
     }
 
+    // Item 3
     @Test
     void deveLancarExcecaoQuandoQuantidadeMaiorQueEstoque() {
         Produto produtoComPoucoEstoque = new Produto("Caneta", 2.50, 5);
@@ -35,6 +38,7 @@ class CarrinhoTest {
                 () -> carrinho.adicionarItem(produtoComPoucoEstoque, 6));
     }
 
+    // Item 4
     @Test
     void deveReduzirTotalAoRemoverItem() throws Exception {
         carrinho.adicionarItem(produto, 3);
@@ -42,6 +46,7 @@ class CarrinhoTest {
         assertEquals(0.0, carrinho.calcularTotal(), 0.0001);
     }
 
+    // Item 5
     @Test
     void deveAplicarCupomDeDescontoAoTotal() throws Exception {
         Produto produtoDezReais = new Produto("Caneta", 10.00, 10);
@@ -51,6 +56,7 @@ class CarrinhoTest {
         assertEquals(18.00, carrinho.calcularTotal(), 0.0001);
     }
 
+    // Item 6
     @Test
     void deveLancarExcecaoAoAplicarMesmoCupomDuasVezes() throws Exception {
         Produto produtoDezReais = new Produto("Caneta", 10.00, 10);
@@ -59,5 +65,11 @@ class CarrinhoTest {
         carrinho.aplicarCupom(cupom);
         assertThrows(CupomJaAplicadoException.class,
                 () -> carrinho.aplicarCupom(cupom));
+    }
+
+    // Item 7
+    @Test
+    void deveLancarExcecaoAoFinalizarCarrinhoVazio() {
+        assertThrows(CarrinhoVazioException.class, () -> carrinho.finalizarCompra());
     }
 }
