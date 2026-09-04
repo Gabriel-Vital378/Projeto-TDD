@@ -31,7 +31,10 @@ public class Carrinho {
         itens.removeIf(item -> item.getProduto().equals(produto));
     }
 
-    public void aplicarCupom(Cupom cupom) {
+    public void aplicarCupom(Cupom cupom) throws CupomJaAplicadoException {
+        if (cupomAplicado != null && cupomAplicado.getCodigo().equals(cupom.getCodigo())) {
+            throw new CupomJaAplicadoException("Este cupom ja foi aplicado.");
+        }
         this.cupomAplicado = cupom;
     }
 }
