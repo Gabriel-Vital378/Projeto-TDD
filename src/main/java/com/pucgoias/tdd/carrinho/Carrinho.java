@@ -6,11 +6,15 @@ import java.util.List;
 public class Carrinho {
 
     private final List<ItemCarrinho> itens = new ArrayList<>();
+    private Cupom cupomAplicado;
 
     public double calcularTotal() {
         double total = 0.0;
         for (ItemCarrinho item : itens) {
             total += item.getSubtotal();
+        }
+        if (cupomAplicado != null) {
+            total -= total * cupomAplicado.getPercentualDesconto();
         }
         return total;
     }
@@ -25,5 +29,9 @@ public class Carrinho {
 
     public void removerItem(Produto produto) {
         itens.removeIf(item -> item.getProduto().equals(produto));
+    }
+
+    public void aplicarCupom(Cupom cupom) {
+        this.cupomAplicado = cupom;
     }
 }
